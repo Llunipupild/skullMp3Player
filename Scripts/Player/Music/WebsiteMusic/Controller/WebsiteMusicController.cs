@@ -95,6 +95,7 @@ namespace SkullMp3Player.Scripts.Player.Music.WebsiteMusic.Controller
 
             List<MusicModel>? musicModels = await webSiteParser.GetRandomMusicAsync();
             if (musicModels.IsNullOrEmpty()) {
+                _alreadyRefresh = false;
                 return;
             }
 
