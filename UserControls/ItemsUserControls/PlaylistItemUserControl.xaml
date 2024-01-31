@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="SkullMp3Player.UserControls.PlaylistItemUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Name="PlaylistItem">
+    <Border CornerRadius="20" Height="40">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="Background" Value="Transparent"/>
+
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#f1f1f1"/>
+                    </Trigger>
+
+                    <DataTrigger Binding="{Binding ElementName=PlaylistItem, Path=IsActive}" Value="True">
+                        <Setter Property="Background" Value="Beige"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="15 0 60 0">
+                <TextBlock Text="{Binding ElementName=PlaylistItem, Path=Description}" FontSize="24" FontWeight="Bold" Foreground="#999999" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

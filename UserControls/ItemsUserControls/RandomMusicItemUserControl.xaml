@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="SkullMp3Player.UserControls.RandomMusicItemUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Name="RandomItem">
+    <Border x:Name="border" CornerRadius="30" Padding="10" Margin="10 10 10 10">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="Background" Value="#ecf4f0"/>
+
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#03bf69"/>
+                    </Trigger>
+
+                    <DataTrigger Binding="{Binding ElementName=RandomItem, Path=IsActive}" Value="True">
+                        <Setter Property="Background" Value="#03bf69"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Ellipse Width="40" Height="40" Margin="0 0 20 0" Grid.Column="0">
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="{Binding ElementName=RandomItem, Path=Image}"/>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <TextBlock Text="{Binding ElementName=RandomItem, Path=MusicName}" FontSize="16" FontWeight="SemiBold" Grid.Column="1" VerticalAlignment="Center" Margin="0 0 0 20">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="#787c7a"/>
+
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=border, Path=IsMouseOver}" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding ElementName=RandomItem, Path=IsActive}" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <TextBlock Text="{Binding ElementName=RandomItem, Path=Author}" FontSize="18" FontWeight="SemiBold" Grid.Column="1" VerticalAlignment="Center" Margin="0 30 0 2"/>
+        </Grid>
+    </Border>
+</UserControl>

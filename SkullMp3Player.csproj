@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>skull.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\localMusicIcon.png" />
+    <None Remove="Images\skull.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="skull.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
+    <PackageReference Include="taglib-sharp-netstandard2.0" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\localMusicIcon.png" />
+    <Resource Include="Images\skull.png" />
+  </ItemGroup>
+
+</Project>
