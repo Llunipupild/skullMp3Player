@@ -81,7 +81,7 @@
                         <Icon:PackIconMaterial Kind="Download" Style="{StaticResource playerButtonIcon}"/>
                     </Button>
 
-                    <Slider x:Name="MusicPositionSlider" Margin="10 40" Orientation="Horizontal" Minimum="0" Value="0.3" Width="200" Thumb.DragStarted="OnMusicPositionSliderDragStarted" Thumb.DragCompleted="OnMusicPositionSliderDragCompleted"/>
+                    <Slider x:Name="MusicPositionSlider" IsMoveToPointEnabled="True" Margin="10 40" Orientation="Horizontal" Minimum="0" Value="0.3" Width="200" Thumb.DragStarted="OnMusicPositionSliderDragStarted" Thumb.DragCompleted="OnMusicPositionSliderDragCompleted"/>
                     
                     <Ellipse Width="60" Height="60" Margin="30 0 0 0">
                         <Ellipse.Fill>
@@ -89,7 +89,7 @@
                         </Ellipse.Fill>
                     </Ellipse>
 
-                    <Slider x:Name="VolumeSlider" Background="#03bf69" Visibility="Collapsed" Margin = "-750 80 100 0" Orientation="Horizontal" Minimum="0" Maximum="1" Value="0.3" Width="200" Height="20" ValueChanged="OnVolumeSliderValueChanged"/>
+                    <Slider x:Name="VolumeSlider" IsMoveToPointEnabled="True" Background="#03bf69" Visibility="Collapsed" Margin = "-750 80 100 0" Orientation="Horizontal" Minimum="0" Maximum="1" Value="0.3" Width="200" Height="20" ValueChanged="OnVolumeSliderValueChanged"/>
 
                     <StackPanel VerticalAlignment="Center" Margin="5 0 30 0">
                         <TextBlock x:Name="CurrentPlayingMusicName" Text="" Foreground="White" MaxWidth="250" FontSize="16" FontWeight="Bold"/>
