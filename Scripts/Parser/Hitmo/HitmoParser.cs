@@ -1,6 +1,7 @@
 ﻿using SkullMp3Player.Scripts.Client.Controller;
 using SkullMp3Player.Scripts.Parser.Base;
 using SkullMp3Player.Scripts.Player.Music.Model;
+using SkullMp3Player.Scripts.Tools;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -88,7 +89,11 @@ namespace SkullMp3Player.Scripts.Parser.Hitmo
                         continue;
                     }
 
-                    MusicModel music = GetRandomMusic(response);
+                    MusicModel? music = GetRandomMusic(response);
+                    if (music == null) {
+                        continue;
+                    }
+
                     result.Add(music);
                     musicFind = true; 
                 }
@@ -102,9 +107,13 @@ namespace SkullMp3Player.Scripts.Parser.Hitmo
             return await GetMusicAsync(FIND_MUSIC_LINK + searchText);
         }
 
-        private static MusicModel GetRandomMusic(string response)
+        private static MusicModel? GetRandomMusic(string response)
         {
             List<int> musicIndexes = GetAllSubstringsIndexes(response, PLAYLIST_START_LABEL);
+            if (musicIndexes.IsNullOrEmpty()) {
+                return null;
+            }
+
             int randomMusicIndex = GetRandomNumber(0, musicIndexes.Count);
 
             Tuple<List<int>, List<int>> tupleImagesIndexes = GetIndexes(response, new List<int>() { musicIndexes[randomMusicIndex] }, MUSIC_START_IMAGE_LABEL, MUSIC_END_IMAGE_LABEL);

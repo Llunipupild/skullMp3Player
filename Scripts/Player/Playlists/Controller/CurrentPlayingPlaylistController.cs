@@ -36,7 +36,7 @@ namespace SkullMp3Player.Scripts.Player.Playlists.Controller
 
         public void Play(string musicLink, string playlistName, IWebSiteParser? webSiteParser)
         {
-            if (webSiteParser == null || CurrentPlayingPlaylist.PlaylistName != PlaylistNameCreator.GetNewPlaylistName(playlistName, webSiteParser!.GetType())) {
+            if (webSiteParser == null || CurrentPlayingPlaylist == null || CurrentPlayingPlaylist.PlaylistName != PlaylistNameCreator.GetNewPlaylistName(playlistName, webSiteParser!.GetType())) {
                 CurrentPlayingPlaylist = _musicRepository.GetPlaylistModel(webSiteParser!, playlistName)!;
             }
 
@@ -105,6 +105,9 @@ namespace SkullMp3Player.Scripts.Player.Playlists.Controller
         public void UpdateCurrentMusicIndex(string? musicLink = null)
         {
             if (CurrentPlayingPlaylist == null) {
+                return;
+            }
+            if (CurrentPlayingMusic == null) {
                 return;
             }
 

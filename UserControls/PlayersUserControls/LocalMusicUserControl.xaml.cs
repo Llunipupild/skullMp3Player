@@ -1,7 +1,9 @@
 ﻿using Microsoft.Win32;
 using SkullMp3Player.Scripts.Player.Music.Model;
+using SkullMp3Player.Scripts.Tools;
 using SkullMp3Player.UserControls.PlayersUserControls.Interfaces;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,6 +34,11 @@ namespace SkullMp3Player.UserControls
         public LocalMusicUserControl()
         {
             InitializeComponent();
+        }
+
+        public void AddMusicFromPlayerFolder()
+        {
+            AddMusicToPlayer(LocalMusicManager.GetLocalMusic());
         }
 
         public void RemoveOnAddedMusic(string musiclink)
@@ -75,8 +82,12 @@ namespace SkullMp3Player.UserControls
             ShuffleMusicEvent?.Invoke();
         }
 
-        private void AddMusicToPlayer(string[] mp3files)
+        private void AddMusicToPlayer(string[]? mp3files)
         {
+            if (mp3files == null) {
+                return;
+            }
+
             AddMusicEvent?.Invoke(GetMusicModels(RemoveAlreadyAddedMusic(mp3files)));
         }
 
@@ -84,7 +95,12 @@ namespace SkullMp3Player.UserControls
         {
             List<MusicModel> result = new();
             foreach (string mp3File in mp3Files) {
-                File taglibfile = File.Create(mp3File);
+                FileInfo fileInfo = new(mp3File);
+                if(fileInfo.Extension != ".mp3") {
+                    continue;
+                }
+
+                TagLib.File taglibfile = TagLib.File.Create(mp3File);
                 string title = taglibfile.Tag.Title ?? UNKNOWN;
                 string author = taglibfile.Tag.Performers.FirstOrDefault() ?? UNKNOWN;
                 IPicture? picture = taglibfile.Tag.Pictures.FirstOrDefault();

@@ -14,6 +14,7 @@ using SkullMp3Player.Scripts.Ui.MusicItems.Controller;
 using SkullMp3Player.UserControls;
 using SkullMp3Player.UserControls.Interface;
 using SkullMp3Player.UserControls.PlayersUserControls.Interfaces;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -81,6 +82,7 @@ namespace SkullMp3Player
         private void OnWindowLoaded(object sender, RoutedEventArgs e)
         {
             Init();
+            AddLocalMusicFromPlayerFolder();
             MakeTestConnectionsAsync();
         }
 
@@ -158,6 +160,12 @@ namespace SkullMp3Player
             _alreadyDownload = true;
             await HttpController.DownloadFile(_mp3Player.CurrentMusic, CurrentPlayingMusicName.Text, ".mp3");
             _alreadyDownload = false;
+        }
+
+        private void AddLocalMusicFromPlayerFolder()
+        {
+            Directory.CreateDirectory(Mp3PlayerFolder.GetPlayerFolder());
+            LocalMusicUserControl.AddMusicFromPlayerFolder();
         }
 
         private async void MakeTestConnectionsAsync()

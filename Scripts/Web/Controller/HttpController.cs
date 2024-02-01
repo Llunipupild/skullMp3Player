@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkullMp3Player.Scripts.Tools;
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace SkullMp3Player.Scripts.Client.Controller
         public static async Task DownloadFile(string address, string fileName, string fileExtension)
         {
             Stream stream = await _httpClient.GetStreamAsync(address);
-            FileStream fileStrean = new(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + fileName + fileExtension, FileMode.OpenOrCreate);
+            FileStream fileStrean = new(Mp3PlayerFolder.GetPlayerFolder() + "\\" + fileName + fileExtension, FileMode.CreateNew);
             await stream.CopyToAsync(fileStrean);
             fileStrean.Close();
         }
