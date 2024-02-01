@@ -59,7 +59,8 @@ namespace SkullMp3Player
             _musicItemsController = new(CurrentPlayingMusicName, CurrentPlayingMusicAuthor, CurrentPlayingMusicImage);
             _websiteMusicController = new(_musicRepository, _musicItemsController, _currentPlayingPlaylistController);
             _localMusicController = new(_musicRepository, _musicItemsController, _currentPlayingPlaylistController, LocalMusicUserControl);
-            
+
+            _websiteMusicController.PlaylistEvent += SetPlayButtonImage;
             _currentPlayerUserControl = LocalMusicUserControl;
             _pauseButtonPackMaterial = (PackIconMaterial) PauseButton.Content;
             _currentParser = null;
@@ -209,12 +210,14 @@ namespace SkullMp3Player
             InstallInitialMusicService installInitialMusicService = new(_musicRepository, _musicItemsController);
             if (await HttpController.HasConnection(HitmoParser.HOST)) {
                 _hitmoParser = new();
+                _musicRepository.AddParser(_hitmoParser);
                 HitmoButton.IsEnabled = true;
                 installInitialMusicService.SetStartMusicOnUserControl(HitmoUserControl, _hitmoParser, _websiteMusicController.Playlist);
             }
 
             if (await HttpController.HasConnection(SuperMusicParser.HOST)) {
                 _superMusicParser = new();
+                _musicRepository.AddParser(_superMusicParser);
                 SuperMusicButton.IsEnabled = true;
                 installInitialMusicService.SetStartMusicOnUserControl(SuperMusicUserControl, _superMusicParser, _websiteMusicController.Playlist);
             }

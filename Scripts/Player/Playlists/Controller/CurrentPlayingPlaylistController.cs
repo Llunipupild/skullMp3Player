@@ -25,7 +25,7 @@ namespace SkullMp3Player.Scripts.Player.Playlists.Controller
 
         public void Play(string playlistName, IWebSiteParser webSiteParser)
         {
-            CurrentPlayingPlaylist = _musicRepository.GetPlaylistModel(webSiteParser, playlistName);
+            CurrentPlayingPlaylist = _musicRepository.GetPlaylistModel(webSiteParser, playlistName)!;
             Play(CurrentPlayingPlaylist.MusicModels.First().Link);
         }
 
@@ -41,7 +41,7 @@ namespace SkullMp3Player.Scripts.Player.Playlists.Controller
         public void Play(string musicLink, string playlistName, IWebSiteParser webSiteParser)
         {
             if (CurrentPlayingPlaylist == null || CurrentPlayingPlaylist.PlaylistName != PlaylistNameCreator.GetNewPlaylistName(playlistName, webSiteParser!.GetType())) {
-                CurrentPlayingPlaylist = _musicRepository.GetPlaylistModel(webSiteParser, playlistName);
+                CurrentPlayingPlaylist = _musicRepository.GetPlaylistModel(webSiteParser, playlistName)!;
             }
 
             Play(musicLink);
@@ -56,6 +56,9 @@ namespace SkullMp3Player.Scripts.Player.Playlists.Controller
         public void PlayNext()
         {
             if (CurrentPlayingPlaylist == null) {
+                return;
+            }
+            if (CurrentPlayingPlaylist.MusicModels.IsNullOrEmpty()) {
                 return;
             }
             if (_currentMusicIndex + 1 >= CurrentPlayingPlaylist.MusicModels.Count) {

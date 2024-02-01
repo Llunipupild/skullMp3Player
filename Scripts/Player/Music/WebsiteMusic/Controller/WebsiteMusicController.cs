@@ -25,6 +25,9 @@ namespace SkullMp3Player.Scripts.Player.Music.WebsiteMusic.Controller
         public IWebSitePlayerUserControl CurrentPlayerUserControl { get; set; } = null!;
         public IWebSiteParser CurrentWebSiteParser { get; set; } = null!;
 
+        public event PlaylistDelegate PlaylistEvent = null!;
+        public delegate void PlaylistDelegate();
+
         public WebsiteMusicController(MusicRepository musicRepository, MusicItemsController musicItemsController, CurrentPlayingPlaylistController currentPlayingPlaylistController)
         {
             _musicRepository = musicRepository;
@@ -50,6 +53,8 @@ namespace SkullMp3Player.Scripts.Player.Music.WebsiteMusic.Controller
             _musicItemsController.SetCurrentPlayingMusicData(_currentPlayingPlaylistController.CurrentPlayingMusic!, CurrentPlayerUserControl);
             _musicItemsController.UpdateMusicItemPanelEvent += OnUpdateMusicItemPanel;
             _pressedPlaylistItem = playlistItem;
+
+            PlaylistEvent?.Invoke();
         }
 
         public async void FindMusicAsync(string findMusicText)

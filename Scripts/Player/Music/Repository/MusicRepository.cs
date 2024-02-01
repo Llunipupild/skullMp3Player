@@ -20,12 +20,15 @@ namespace SkullMp3Player.Scripts.Player.Music.Repository
             LocalMusicPlaylist = new(new List<MusicModel>(), LocalMusicUserControl.LOCAL_MUSIC_PLAYLIST_NAME);
         }
 
-        public void AddMusicToRepository(IWebSiteParser webSiteParser, List<MusicModel> musicModels, string playlistName)
+        public void AddParser(IWebSiteParser webSiteParser)
         {
             if (!_cachedMusicModels.ContainsKey(webSiteParser)) {
                 _cachedMusicModels.Add(webSiteParser, new List<PlaylistModel>());
             }
+        }
 
+        public void AddMusicToRepository(IWebSiteParser webSiteParser, List<MusicModel> musicModels, string playlistName)
+        {
             PlaylistModel playlistModel = new(musicModels, PlaylistNameCreator.GetNewPlaylistName(playlistName, webSiteParser.GetType()));
             _cachedMusicModels[webSiteParser].Add(playlistModel);
         }
@@ -69,14 +72,14 @@ namespace SkullMp3Player.Scripts.Player.Music.Repository
             throw new NullReferenceException($"{playlistName} unknown playlist");
         }
 
-        public PlaylistModel GetPlaylistModel(IWebSiteParser webSiteParser, string playlistName)
+        public PlaylistModel? GetPlaylistModel(IWebSiteParser webSiteParser, string playlistName)
         {
             if (!_cachedMusicModels.ContainsKey(webSiteParser)) {
                 throw new NullReferenceException($"{webSiteParser.GetType()} not cached");
             }
 
             playlistName = PlaylistNameCreator.GetNewPlaylistName(playlistName, webSiteParser.GetType());
-            return _cachedMusicModels[webSiteParser].First(pm => pm.PlaylistName == playlistName);
+            return _cachedMusicModels[webSiteParser].FirstOrDefault(pm => pm.PlaylistName == playlistName);
         }
     }
 }
