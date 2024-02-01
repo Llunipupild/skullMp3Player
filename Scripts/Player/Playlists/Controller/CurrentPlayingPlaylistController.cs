@@ -9,8 +9,8 @@ namespace SkullMp3Player.Scripts.Player.Playlists.Controller
 {
     class CurrentPlayingPlaylistController
     {
-        private readonly Mp3Player _mp3Player;
-        private readonly MusicRepository _musicRepository;
+        private Mp3Player _mp3Player;
+        private MusicRepository _musicRepository;
         private int _currentMusicIndex = 0;
 
         public PlaylistModel CurrentPlayingPlaylist { get; set; } = null!;
@@ -25,19 +25,23 @@ namespace SkullMp3Player.Scripts.Player.Playlists.Controller
 
         public void Play(string playlistName, IWebSiteParser webSiteParser)
         {
-            PlaylistModel? playlistModel = _musicRepository.GetPlaylistModel(webSiteParser, playlistName);
-            if (playlistModel == null) {
-                return;
-            }
-
-            CurrentPlayingPlaylist = playlistModel;
+            CurrentPlayingPlaylist = _musicRepository.GetPlaylistModel(webSiteParser, playlistName);
             Play(CurrentPlayingPlaylist.MusicModels.First().Link);
         }
 
-        public void Play(string musicLink, string playlistName, IWebSiteParser? webSiteParser)
+        public void Play(string musicLink, string playlistName)
         {
-            if (webSiteParser == null || CurrentPlayingPlaylist == null || CurrentPlayingPlaylist.PlaylistName != PlaylistNameCreator.GetNewPlaylistName(playlistName, webSiteParser!.GetType())) {
-                CurrentPlayingPlaylist = _musicRepository.GetPlaylistModel(webSiteParser!, playlistName)!;
+            if (CurrentPlayingPlaylist == null || CurrentPlayingPlaylist.PlaylistName != playlistName) {
+                CurrentPlayingPlaylist = _musicRepository.GetPlaylistModel(playlistName);
+            }
+
+            Play(musicLink);
+        }
+
+        public void Play(string musicLink, string playlistName, IWebSiteParser webSiteParser)
+        {
+            if (CurrentPlayingPlaylist == null || CurrentPlayingPlaylist.PlaylistName != PlaylistNameCreator.GetNewPlaylistName(playlistName, webSiteParser!.GetType())) {
+                CurrentPlayingPlaylist = _musicRepository.GetPlaylistModel(webSiteParser, playlistName);
             }
 
             Play(musicLink);
@@ -54,10 +58,6 @@ namespace SkullMp3Player.Scripts.Player.Playlists.Controller
             if (CurrentPlayingPlaylist == null) {
                 return;
             }
-            if (CurrentPlayingPlaylist.MusicModels.Count == 0) {
-                return;
-            }
-
             if (_currentMusicIndex + 1 >= CurrentPlayingPlaylist.MusicModels.Count) {
                 _currentMusicIndex = -1;
             }

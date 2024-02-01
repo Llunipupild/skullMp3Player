@@ -53,7 +53,7 @@ namespace SkullMp3Player.Scripts.Player.Music.LocalMusic.Controller
 
         public void ShuffleMusic()
         {
-            _musicItemsController.ShufflePanelChildrens(_localMusicUserControl.MusicListStackPanel, _currentPlayingPlaylistController.CurrentPlayingPlaylist.MusicModels);
+            _musicItemsController.ShufflePanelChildrens(_localMusicUserControl.MusicListStackPanel, _musicRepository.LocalMusicPlaylist.MusicModels);
             _currentPlayingPlaylistController.UpdateCurrentMusicIndex();
         }
     }

@@ -2,6 +2,7 @@
 using SkullMp3Player.Scripts.Player.Playlists.Model;
 using SkullMp3Player.Scripts.Tools;
 using SkullMp3Player.UserControls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -59,17 +60,23 @@ namespace SkullMp3Player.Scripts.Player.Music.Repository
             LocalMusicPlaylist.MusicModels.Remove(musicModel);
         }
 
-        public PlaylistModel? GetPlaylistModel(IWebSiteParser webSiteParser, string playlistName)
+        public PlaylistModel GetPlaylistModel(string playlistName)
         {
             if (playlistName == LocalMusicUserControl.LOCAL_MUSIC_PLAYLIST_NAME) {
                 return LocalMusicPlaylist;
             }
+
+            throw new NullReferenceException($"{playlistName} unknown playlist");
+        }
+
+        public PlaylistModel GetPlaylistModel(IWebSiteParser webSiteParser, string playlistName)
+        {
             if (!_cachedMusicModels.ContainsKey(webSiteParser)) {
-                return null;
+                throw new NullReferenceException($"{webSiteParser.GetType()} not cached");
             }
 
             playlistName = PlaylistNameCreator.GetNewPlaylistName(playlistName, webSiteParser.GetType());
-            return _cachedMusicModels[webSiteParser].FirstOrDefault(pm => pm.PlaylistName == playlistName);
+            return _cachedMusicModels[webSiteParser].First(pm => pm.PlaylistName == playlistName);
         }
     }
 }

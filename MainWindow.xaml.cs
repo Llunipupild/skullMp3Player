@@ -51,7 +51,7 @@ namespace SkullMp3Player
 
         private void Init()
         {
-            _mp3Player = new Mp3Player(() => OnNextButtonClick(this, null!), CurrentPlayingMusicTime);
+            _mp3Player = new Mp3Player(() => OnNextButtonClick(this, null!), CurrentPlayingMusicTime, MusicPositionSlider);
             _musicRepository = new();
             _currentPlayingPlaylistController = new(_mp3Player, _musicRepository);
             _navigationService = new(LocalMusicUserControl);
@@ -109,7 +109,11 @@ namespace SkullMp3Player
         {
             playlistName ??= _currentPlayerUserControl.CurrentLoadedPlaylistName;
             _musicItemsController.SetCurrentPlayingMusicData(musicLink, _currentPlayerUserControl);
-            _currentPlayingPlaylistController.Play(musicLink, playlistName, _currentParser);
+            if (_currentParser == null) {
+                _currentPlayingPlaylistController.Play(musicLink, playlistName);
+            } else {
+                _currentPlayingPlaylistController.Play(musicLink, playlistName, _currentParser);
+            }
             SetPlayButtonImage();
         }
 
@@ -133,7 +137,39 @@ namespace SkullMp3Player
             SetPlayButtonImage();
         }
 
-        private void OnSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void OnVolumeButtonClick(object sender, RoutedEventArgs e)
+        {
+            switch (VolumeSlider.Visibility) {
+                case Visibility.Visible:
+                    VolumeSlider.Visibility = Visibility.Collapsed;
+                    return;
+                case Visibility.Collapsed:
+                    VolumeSlider.Visibility = Visibility.Visible;
+                    return;
+            }
+        }
+
+        private void OnVolumeSliderDragEnter(object sender, DragEventArgs e)
+        {
+            _mp3Player.Pause();
+        }
+
+        private void OnMusicPositionSliderDragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        {
+            _mp3Player.Pause();
+        }
+
+        private void OnMusicPositionSliderDragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            if (sender is not Slider slider) {
+                return;
+            }
+
+            _mp3Player.ChangeMusicPosition(slider.Value);
+            _mp3Player.Pause();
+        }
+
+        private void OnVolumeSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (sender is not Slider slider) {
                 return;

@@ -117,23 +117,21 @@ namespace SkullMp3Player.Scripts.Ui.MusicItems.Controller
         public void ShufflePanelChildrens<T>(StackPanel panel, List<T> list)
         {
             Random random = new();
-            int countElementedChanged = 0;
             int countChilds = panel.Children.Count;
-            int currentElementIndex = 0;
+            if (countChilds <= 0) {
+                return;
+            }
 
-            while (countElementedChanged < countChilds) {
-                object currentElement = panel.Children[currentElementIndex];
-                T currentElementAtList = list[currentElementIndex]!;
+            for (int i = 0; i < countChilds; i++) {
+                int randomNumber = random.Next(countChilds);
+                object currentElement = panel.Children[i];
+                T currentElementAtList = list[i]!;
 
-                panel.Children.Remove((UIElement)currentElement);
+                panel.Children.Remove((UIElement) currentElement);
                 list.Remove(currentElementAtList);
 
-                int randomNumber = random.Next(countChilds);
-                panel.Children.Insert(randomNumber, (UIElement)currentElement);
+                panel.Children.Insert(randomNumber, (UIElement) currentElement);
                 list.Insert(randomNumber, currentElementAtList);
-
-                currentElementIndex = randomNumber;
-                countElementedChanged++;
             }
         }
 

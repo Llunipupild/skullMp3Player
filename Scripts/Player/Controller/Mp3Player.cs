@@ -1,43 +1,31 @@
 ﻿using System.Windows.Media;
 using System;
 using System.Windows.Controls;
-using System.Windows.Threading;
 
 namespace SkullMp3Player.Scripts.Player.Controller
 {
     class Mp3Player
     {
         private MediaPlayer _player;
-        private TextBlock _timerTextBlock;
-        private DispatcherTimer _timer;
-
-        private string _currentMusicTime = null!;
+        private Timer _timer;
         private Action _onSoundEndAction;
 
         public string? CurrentMusic { get; private set; }
         public bool IsPlaying { get; private set; }
 
-        public Mp3Player(Action onSoundEndAction, TextBlock textBlock)
+        public Mp3Player(Action onSoundEndAction, TextBlock textBlock, Slider musicPositionSlider)
         {
             _player = new MediaPlayer();
             _player.MediaOpened += OnSoundOpened;
             _player.MediaEnded += OnSoundEnd;
 
+            _timer = new(textBlock, musicPositionSlider, _player);
             _onSoundEndAction = onSoundEndAction;
-            _timerTextBlock = textBlock;
-
-            _timer = new() {
-                Interval = TimeSpan.FromSeconds(0)
-            };
-            _timer.Tick += OnTimerIick;
         }
 
         public void Play(string uri)
         {
-            if (CurrentMusic == uri) {
-                return;
-            }
-            if (string.IsNullOrEmpty(uri)) {
+            if (CurrentMusic == uri || string.IsNullOrEmpty(uri)) {
                 return;
             }
 
@@ -67,9 +55,6 @@ namespace SkullMp3Player.Scripts.Player.Controller
 
         public void Stop()
         {
-            _player.Stop();
-            _timer.Stop();
-            _timerTextBlock.Text = string.Empty;
             OnSoundEnd(this, EventArgs.Empty);
         }
 
@@ -78,21 +63,22 @@ namespace SkullMp3Player.Scripts.Player.Controller
             _player.Volume = volume;
         }
 
+        public void ChangeMusicPosition(double position)
+        {
+            _player.Position = TimeSpan.FromSeconds(position);
+        }
+
         private void OnSoundOpened(object? sender, EventArgs e)
         {
-            _currentMusicTime = _player.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
-            _timer.Start();
+            _timer.Start(_player.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
         }
 
         private void OnSoundEnd(object? sender, EventArgs e)
         {
             CurrentMusic = null;
+            _player.Stop();
+            _timer.Stop();
             _onSoundEndAction.Invoke();
-        }
-
-        private void OnTimerIick(object? sender, EventArgs e)
-        {
-            _timerTextBlock.Text = string.Format("{0} / {1}", _player.Position.ToString(@"mm\:ss"), _currentMusicTime);
         }
     }
 }
