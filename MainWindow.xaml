@@ -65,31 +65,31 @@
             
             <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Background="#03bf69" CornerRadius="40 0 40 0" Margin="40 0 0 0">
                 <StackPanel Orientation="Horizontal">
-                    <Button Style="{StaticResource playerButton}" Click="OnPrevButtonClick" Margin="30 0 0 0">
+                    <Button x:Name="PrevMusicButton" Style="{StaticResource playerButton}" Margin="30 0 0 0">
                         <Icon:PackIconMaterial Kind="SkipPrevious" Style="{StaticResource playerButtonIcon}"/>
                     </Button>
-                    <Button x:Name="PauseButton" Style="{StaticResource playerButton}" Click="OnPauseButtonClick">
+                    <Button x:Name="PauseButton" Style="{StaticResource playerButton}">
                         <Icon:PackIconMaterial Kind="Pause" Style="{StaticResource playerButtonIcon}"/>
                     </Button>
-                    <Button Style="{StaticResource playerButton}" Click="OnNextButtonClick">
+                    <Button x:Name="NextMusicButton" Style="{StaticResource playerButton}">
                         <Icon:PackIconMaterial Kind="SkipNext" Style="{StaticResource playerButtonIcon}"/>
                     </Button>
-                    <Button x:Name="VolumeButton" Style="{StaticResource playerButton}" Click="OnVolumeButtonClick">
-                            <Icon:PackIconMaterial Kind="VolumeMedium" Style="{StaticResource playerButtonIcon}"/>
+                    <Button x:Name="VolumeButton" Style="{StaticResource playerButton}">
+                        <Icon:PackIconMaterial Kind="VolumeMedium" Style="{StaticResource playerButtonIcon}"/>
                     </Button>
-                    <Button Style="{StaticResource playerButton}" Click="OnDownloadButtonClick">
+                    <Button x:Name="DownloadButton" Style="{StaticResource playerButton}">
                         <Icon:PackIconMaterial Kind="Download" Style="{StaticResource playerButtonIcon}"/>
                     </Button>
 
-                    <Slider x:Name="MusicPositionSlider" IsMoveToPointEnabled="True" Margin="10 40" Orientation="Horizontal" Minimum="0" Value="0.3" Width="200" Thumb.DragStarted="OnMusicPositionSliderDragStarted" Thumb.DragCompleted="OnMusicPositionSliderDragCompleted"/>
+                    <Slider x:Name="MusicPositionSlider" IsMoveToPointEnabled="True" Margin="10 40" Orientation="Horizontal" Minimum="0" Value="0.3" Width="200"/>
                     
-                    <Ellipse Width="60" Height="60" Margin="30 0 0 0">
+                    <Ellipse Width="60" Height="60" Margin="15 0 0 0">
                         <Ellipse.Fill>
                             <ImageBrush x:Name="CurrentPlayingMusicImage"/>
                         </Ellipse.Fill>
                     </Ellipse>
 
-                    <Slider x:Name="VolumeSlider" IsMoveToPointEnabled="True" Background="#03bf69" Visibility="Collapsed" Margin = "-750 80 100 0" Orientation="Horizontal" Minimum="0" Maximum="1" Value="0.3" Width="200" Height="20" ValueChanged="OnVolumeSliderValueChanged"/>
+                    <Slider x:Name="VolumeSlider" IsMoveToPointEnabled="True" Background="#03bf69" Visibility="Collapsed" Margin = "-750 80 100 0" Orientation="Horizontal" Minimum="0" Maximum="1" Value="0.3" Width="200" Height="20"/>
 
                     <StackPanel VerticalAlignment="Center" Margin="5 0 30 0">
                         <TextBlock x:Name="CurrentPlayingMusicName" Text="" Foreground="White" MaxWidth="250" FontSize="16" FontWeight="Bold"/>

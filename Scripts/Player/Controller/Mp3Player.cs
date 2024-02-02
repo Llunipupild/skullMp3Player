@@ -4,23 +4,23 @@ using System.Windows.Controls;
 
 namespace SkullMp3Player.Scripts.Player.Controller
 {
-    class Mp3Player
+    public class Mp3Player
     {
         private MediaPlayer _player;
         private Timer _timer;
-        private Action _onSoundEndAction;
+
+        public event EndSound EndSoundEvent = null!;
+        public delegate void EndSound();
 
         public string? CurrentMusic { get; private set; }
         public bool IsPlaying { get; private set; }
 
-        public Mp3Player(Action onSoundEndAction, TextBlock textBlock, Slider musicPositionSlider)
+        public Mp3Player(TextBlock textBlock, Slider musicPositionSlider)
         {
             _player = new MediaPlayer();
             _player.MediaOpened += OnSoundOpened;
             _player.MediaEnded += OnSoundEnd;
-
             _timer = new(textBlock, musicPositionSlider, _player);
-            _onSoundEndAction = onSoundEndAction;
         }
 
         public void Play(string uri)
@@ -42,7 +42,7 @@ namespace SkullMp3Player.Scripts.Player.Controller
 
         public void Pause()
         {
-            if (!IsPlaying) {
+            if (!IsPlaying && CurrentMusic != null) {
                 Play();
                 _timer.Start();
                 return;
@@ -78,7 +78,8 @@ namespace SkullMp3Player.Scripts.Player.Controller
             CurrentMusic = null;
             _player.Stop();
             _timer.Stop();
-            _onSoundEndAction.Invoke();
+            _timer.ClearTimerText();
+            EndSoundEvent?.Invoke();
         }
     }
 }

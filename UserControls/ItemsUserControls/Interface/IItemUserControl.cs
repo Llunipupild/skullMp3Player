@@ -2,7 +2,7 @@
 
 namespace SkullMp3Player.UserControls.ItemsUserControls.Interface
 {
-    internal interface IItemUserControl
+    public interface IItemUserControl
     {
         public string MusicLink { get; }
         public string MusicName { get; }

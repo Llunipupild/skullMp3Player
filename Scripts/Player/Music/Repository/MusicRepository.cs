@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace SkullMp3Player.Scripts.Player.Music.Repository
 {
-    class MusicRepository
+    public class MusicRepository
     {
         private Dictionary<IWebSiteParser, List<PlaylistModel>> _cachedMusicModels;
 

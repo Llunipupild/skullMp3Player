@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace SkullMp3Player.Scripts
 {
-    interface IWebSiteParser
+    public interface IWebSiteParser
     {
         public string NewMusic { get; }
         public string PopularMusic { get; }

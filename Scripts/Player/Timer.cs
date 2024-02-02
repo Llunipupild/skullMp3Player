@@ -40,6 +40,10 @@ namespace SkullMp3Player.Scripts.Player
         public void Stop()
         {
             _timer.Stop();
+        }
+
+        public void ClearTimerText()
+        {
             _timerTextBlock.Text = string.Empty;
         }
 

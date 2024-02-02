@@ -12,7 +12,7 @@ using SkullMp3Player.UserControls.PlayersUserControls.Interfaces;
 
 namespace SkullMp3Player.Scripts.Ui.MusicItems.Controller
 {
-    internal class MusicItemsController
+    public class MusicItemsController
     {
         private TextBlock _currentPlayingMusicName;
         private TextBlock _currentPlayingMusicAuthor;

@@ -43,10 +43,15 @@ namespace SkullMp3Player.Scripts.Player.Music.LocalMusic.Controller
             _musicItemsController.RemoveMusicItem(_currentPlayingPlaylistController.CurrentPlayingMusic, _localMusicUserControl.MusicListStackPanel);
             _localMusicUserControl.RemoveOnAddedMusic(_currentPlayingPlaylistController.CurrentPlayingMusic);
             _currentPlayingPlaylistController.StopMusic();
-            _currentPlayingPlaylistController.PlayPrev();
+            if (_currentPlayingPlaylistController.HasntPrevMusic()) {
+                _currentPlayingPlaylistController.PlayNext();
+            } else {
+                _currentPlayingPlaylistController.PlayPrev();
+            }
             _musicItemsController.SetCurrentPlayingMusicData(_currentPlayingPlaylistController.CurrentPlayingMusic, _localMusicUserControl);
 
             if (_currentPlayingPlaylistController.CurrentPlayingPlaylist.MusicModels.Count == 0) {
+                _currentPlayingPlaylistController.StopMusic();
                 _musicItemsController.ClearCurrentPlayingMusicData();
             }
         }

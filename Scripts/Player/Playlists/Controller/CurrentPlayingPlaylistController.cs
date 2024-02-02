@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace SkullMp3Player.Scripts.Player.Playlists.Controller
 {
-    class CurrentPlayingPlaylistController
+    public class CurrentPlayingPlaylistController
     {
         private Mp3Player _mp3Player;
         private MusicRepository _musicRepository;
@@ -61,6 +61,8 @@ namespace SkullMp3Player.Scripts.Player.Playlists.Controller
             if (CurrentPlayingPlaylist.MusicModels.IsNullOrEmpty()) {
                 return;
             }
+
+
             if (_currentMusicIndex + 1 >= CurrentPlayingPlaylist.MusicModels.Count) {
                 _currentMusicIndex = -1;
             }
@@ -74,7 +76,7 @@ namespace SkullMp3Player.Scripts.Player.Playlists.Controller
             if (CurrentPlayingPlaylist == null) {
                 return;
             }
-            if (_currentMusicIndex - 1 < 0) {
+            if (HasntPrevMusic()) {
                 return;
             }
 
@@ -110,12 +112,11 @@ namespace SkullMp3Player.Scripts.Player.Playlists.Controller
             if (CurrentPlayingPlaylist == null) {
                 return;
             }
-            if (CurrentPlayingMusic == null) {
-                return;
-            }
 
             musicLink ??= CurrentPlayingMusic;
             _currentMusicIndex = CurrentPlayingPlaylist.MusicModels.IndexOf(CurrentPlayingPlaylist.MusicModels.First(x => x.Link == musicLink));
         }
+
+        public bool HasntPrevMusic() => _currentMusicIndex - 1 < 0;
     }
 }
