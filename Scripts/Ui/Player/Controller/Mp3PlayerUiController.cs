@@ -64,10 +64,6 @@ namespace SkullMp3Player.Scripts.Ui.Player.Controller
 
         private void OnPrevButtonClick(object sender, RoutedEventArgs e)
         {
-            if (_mp3Player.CurrentMusic == null) {
-                return;
-            }
-
             _currentPlayingPlaylistController.PlayPrev();
             _musicItemsController.SetCurrentPlayingMusicData(_currentPlayingPlaylistController.CurrentPlayingMusic!, CurrentPlayerUserControl);
             SetPlayButtonImage();
@@ -75,11 +71,7 @@ namespace SkullMp3Player.Scripts.Ui.Player.Controller
 
         private void OnNextButtonClick(object sender, RoutedEventArgs e)
         {
-            if (_mp3Player.CurrentMusic == null) {
-                _musicItemsController.ClearCurrentPlayingMusicData();
-                return;
-            }
-
+            _musicItemsController.ClearCurrentPlayingMusicData();
             _currentPlayingPlaylistController.PlayNext();
             _musicItemsController.SetCurrentPlayingMusicData(_mp3Player.CurrentMusic!, CurrentPlayerUserControl);
             SetPlayButtonImage();
